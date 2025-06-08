@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\PostController; 
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,5 +31,9 @@ Route::middleware(['auth', 'verified'])
         Route::get('/profile', [DashboardController::class, 'profile'])
             ->name('index');    
     });
+
+Route::resource("posts", PostController::class)
+->middleware(['auth', 'verified']);
+
 
     require __DIR__.'/auth.php';
