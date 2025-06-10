@@ -27,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view("posts.create");
     }
 
     /**
@@ -38,7 +38,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request -> all();
+
+        $newPost = new Post();
+
+        $newPost -> title = $data['title'];
+        $newPost -> author = $data['author'];
+        $newPost -> category = $data['category'];
+        $newPost -> content = $data['content'];
+
+        $newPost->save();
+
+        return redirect()->route('posts.show', $newPost);
+
     }
 
     /**
@@ -58,9 +70,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view("posts.edit", compact("post"));
     }
 
     /**
@@ -70,9 +82,18 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $data = $request -> all();
+
+        $post -> title = $data['title'];
+        $post -> author = $data['author'];
+        $post -> category = $data['category'];
+        $post -> content = $data['content'];
+
+        $post->update();
+
+        return redirect()->route('posts.show', $post);
     }
 
     /**
@@ -81,8 +102,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post ->delete();
+        return redirect()->route('posts.index');
     }
 }
