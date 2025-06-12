@@ -21,7 +21,7 @@ class PostsTableSeeder extends Seeder
 
             $newPost->title = $faker->sentence();
             $newPost->author = $faker->name();
-            $newPost->category = $faker->word();
+            $newPost->category_id = rand(1,5);
             $newPost->content = $faker->paragraph();
 
             $newPost-> save();

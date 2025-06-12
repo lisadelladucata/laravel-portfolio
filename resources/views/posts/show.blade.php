@@ -15,7 +15,7 @@
     </div>
 
     <p class="text-muted"><strong>Autore:</strong> {{ $post->author }}</p> 
-    <p class="text-muted"><strong>Categoria:</strong> {{ $post->category }}</p>
+    <p class="text-muted"><strong>Categoria:</strong> {{ $post->category->name }}</p>
 
     <hr class="my-4"> 
 

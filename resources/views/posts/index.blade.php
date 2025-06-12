@@ -17,7 +17,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ $post->title }}</h5> 
                     <p class="card-text text-muted mb-2"><strong>Autore:</strong> {{ $post->author }}</p>
-                    <p class="card-text text-muted mb-3"><strong>Categoria:</strong> {{ $post->category }}</p>
+                    <p class="card-text text-muted mb-3"><strong>Categoria:</strong> {{ $post->category->name }}</p>
                     <a href="{{ route('posts.show', $post) }}" class="btn btn-outline-primary btn-sm">
                         Visualizza Dettagli
                     </a>
