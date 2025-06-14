@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Tag;
 
 class PostController extends Controller
 {
@@ -29,7 +30,9 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view("posts.create", compact('categories'));
+        $tags = Tag::all();
+
+        return view("posts.create", compact('categories', 'tags'));
     }
 
     /**
@@ -46,11 +49,18 @@ class PostController extends Controller
 
         $newPost -> title = $data['title'];
         $newPost -> author = $data['author'];
-        $newPost -> category_id = $data['category'];
+        $newPost -> category_id = $data['category_id'];
         $newPost -> content = $data['content'];
-
+        
         $newPost->save();
+        
+        if($request->has('tags')){
+            $newPost->tags()->sync($data['tags']);
 
+        }else{
+            $newPost->tags()->detach();
+        }
+        
         return redirect()->route('posts.show', $newPost);
 
     }
@@ -75,7 +85,8 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         $categories = Category::all();
-        return view("posts.edit", compact("post", "categories"));
+        $tags = Tag::all();
+        return view("posts.edit", compact("post", "categories", "tags"));
     }
 
     /**
@@ -91,10 +102,17 @@ class PostController extends Controller
 
         $post -> title = $data['title'];
         $post -> author = $data['author'];
-        $post -> category_id = $data['category'];
+        $post -> category_id = $data['category_id'];
         $post -> content = $data['content'];
 
         $post->update();
+
+        if($request->has('tags')){
+            $post->tags()->sync($data['tags']);
+
+        }else{
+            $post->tags()->detach();
+        }
 
         return redirect()->route('posts.show', $post);
     }
@@ -107,6 +125,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if ($post->tags) { // Controlla se la relazione tags è definita
+            $post->tags()->detach();
+        }
+
         $post ->delete();
         return redirect()->route('posts.index');
     }

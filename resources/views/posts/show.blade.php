@@ -16,6 +16,11 @@
 
     <p class="text-muted"><strong>Autore:</strong> {{ $post->author }}</p> 
     <p class="text-muted"><strong>Categoria:</strong> {{ $post->category->name }}</p>
+    @forelse($post->tags as $tag)
+    <span class="badge" style="background-color: {{$tag->color}}">{{$tag->name}}</span> 
+    @empty
+    @endforelse
+    
 
     <hr class="my-4"> 
 

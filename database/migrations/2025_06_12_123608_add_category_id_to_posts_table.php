@@ -13,11 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
+         Schema::table('posts', function (Blueprint $table) {
+        if (Schema::hasColumn('posts', 'category')) {
             $table->dropColumn('category');
+        }
 
+        if (!Schema::hasColumn('posts', 'category_id')) {
             $table->foreignId('category_id')->default(1)->constrained();
-        });
+        }
+    });
     }
 
     /**
@@ -28,11 +32,14 @@ return new class extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->string("category");
+        if (Schema::hasColumn('posts', 'category_id')) {
+             $table->dropForeign(['category_id']);
+             $table->dropColumn('category_id');
+        }
 
-            $table->dropForeign('posts_category_id_foreign');
-            $table->dropColumn('category_id');
-
-        });
+        if (!Schema::hasColumn('posts', 'category')) {
+            $table->string("category")->nullable();
+        }
+    });
     }
 };
